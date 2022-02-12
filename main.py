@@ -13,6 +13,11 @@ from fastapi import FastAPI
 
 from api.users import router
 
+from db.db_setup import engine
+from db.models import user
+
+user.Base.metadata.create_all(bind=engine)
+
 tags_metadata = [
     {
         "name": "users",
@@ -30,7 +35,7 @@ tags_metadata = [
 
 app = FastAPI(
     openapi_url="/api/v1/openapi.json",
-    docs_url="/documentation",
+    # docs_url="/documentation",
     redoc_url=None,
     openapi_tags=tags_metadata,
     title="user example",
@@ -53,4 +58,4 @@ app.include_router(router)
 
 @app.get("/")
 async def homepage():
-    return {"Hello": "World"}
+    return {"message": "Hello World"}
